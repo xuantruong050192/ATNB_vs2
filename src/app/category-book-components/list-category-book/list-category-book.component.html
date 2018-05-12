@@ -1,0 +1,57 @@
+<div class="main-content">
+    <div class="container-fluid">
+      <div class="row">
+  
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+          <h3>Category Book Management</h3>
+        </div>
+        <hr>
+  
+        <div class="row">
+  
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+              <kendo-grid
+              [data]="gridView"
+              [height]="533"
+              [pageSize]="pageSize"
+              [skip]="skip"
+              [pageable]="true"
+              (pageChange)="pageChange($event)"
+              (dataStateChange)="onStateChange($event)"
+              (edit)="editHandler($event)" (remove)="removeHandler($event)"
+              (add)="addHandler($event)"
+              >
+             
+           
+              <ng-template kendoGridToolbarTemplate>
+                <button kendoGridAddCommand  >Add new</button>
+              </ng-template>
+              <kendo-grid-column field="CategoryID" title="ID" width="120">
+              </kendo-grid-column>
+              <kendo-grid-column field="CategoryName" title="Name" width="250">
+              </kendo-grid-column>
+              <kendo-grid-column field="Description" title="Description">
+              </kendo-grid-column>
+              <kendo-grid-command-column title="command" width="250">
+                <ng-template kendoGridCellTemplate>
+                  <button kendoGridEditCommand [primary]="true">Edit</button>
+                  <button kendoGridRemoveCommand>Delete</button>
+                </ng-template>
+              </kendo-grid-command-column>
+            </kendo-grid>
+          </div>
+  
+        </div>
+  
+  
+         <div class="row">
+  
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <edit-category-book [model]="editDataItem" [isNew]="isNew" (save)="saveHandler($event)" (cancel)="cancelHandler()"></edit-category-book>
+          </div>
+  
+        </div> 
+   
+      </div>
+    </div>
+  </div>

@@ -1,0 +1,108 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row example-wrapper">
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <h3>Edit Book</h3>
+      </div>
+      <div class="col-xs-12 col-sm-6 example-col">
+
+        <div class="card">
+          <div class="card-block">
+            <form class="k-form">
+              <label class="k-form-field">
+                
+                <input class="k-textbox" placeholder="Tựa sách" />
+              </label>
+              <label class="k-form-field">
+               
+                <input class="k-textbox" placeholder="Mô tả" />
+              </label>
+            
+              <label class="k-form-field">
+                <span>Danh mục</span>
+                <kendo-dropdownlist name="gender" [data]="genders" [textField]="'text'" [valueField]="'value'" [(ngModel)]="gender" style="width: 100%">
+                </kendo-dropdownlist>
+              </label>
+              <label class="k-form-field">
+                <span>Tác giả</span>
+                <kendo-dropdownlist name="gender" [data]="genders" [textField]="'text'" [valueField]="'value'" [(ngModel)]="gender" style="width: 100%">
+                </kendo-dropdownlist>
+              </label>
+              <label class="k-form-field">
+                <span>Nhà xuất bản</span>
+                <kendo-dropdownlist name="gender" [data]="genders" [textField]="'text'" [valueField]="'value'" [(ngModel)]="gender" style="width: 100%">
+                </kendo-dropdownlist>
+              </label>
+              <label class="k-form-field">
+                <span>Giá</span>
+                <kendo-numerictextbox formControlName="numeric" [min]="0" style="width: 100%"></kendo-numerictextbox>
+              </label>
+              <label class="k-form-field">
+                <span>Số lượng</span>
+                <kendo-numerictextbox formControlName="numeric" [min]="0" style="width: 100%"></kendo-numerictextbox>
+              </label>
+              <label class="k-form-field">
+                <span>Trạng thái</span>
+                <kendo-dropdownlist name="gender" [data]="genders" [textField]="'text'" [valueField]="'value'" [(ngModel)]="gender" style="width: 100%">
+                </kendo-dropdownlist>
+              </label>
+              <label style="display: block; margin: .8em 0 .2em">Avatar:
+                <kendo-upload [saveUrl]="uploadSaveUrl" [removeUrl]="uploadRemoveUrl">
+                </kendo-upload>
+
+              </label>
+           
+              <label>
+
+                <button kendoButton (click)="onButtonClick()"   type="submit" [routerLink]="['/book-management']"  style="background: red;width: 200px;color: white"   >
+                  <i class="glyphicon glyphicon-arrow-left"></i>
+                  <span>Quay lại</span>
+                </button>
+                <button kendoButton (click)="onButtonClick()" type="submit"  style="background: green;width: 200px;color: white"   >
+                  <i class="glyphicon glyphicon-arrow-right"></i>
+                  Tạo
+                </button>
+
+              </label>
+
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-4 example-col">
+
+        <!-- <div class="card">
+          <div class="card-block">
+            <form class="k-form-inline">
+              <label class="k-form-field">
+                <span>First Name</span>
+                <input class="k-textbox" placeholder="Your Name" />
+              </label>
+              <label class="k-form-field">
+                <span>Last Name</span>
+                <input class="k-textbox" placeholder="Your Last Name" />
+              </label>
+            </form>
+          </div>
+        </div> -->
+      </div>
+      <div class="col-xs-12 col-sm-2 example-col">
+
+        <!-- <div class="card">
+            <div class="card-block">
+                <form class="k-form-inline">
+                    <label class="k-form-field">
+                        <span>First Name</span>
+                        <input class="k-textbox" placeholder="Your Name" />
+                    </label>
+                    <label class="k-form-field">
+                        <span>Last Name</span>
+                        <input class="k-textbox" placeholder="Your Last Name" />
+                    </label>
+                </form>
+            </div>
+        </div> -->
+      </div>
+    </div>
+  </div>
+</div>

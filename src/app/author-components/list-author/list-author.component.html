@@ -1,0 +1,54 @@
+<div class="main-content">
+    <div class="container-fluid">
+      <div class="row">
+  
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+          <h3>Author Management</h3>
+        </div>
+        <hr>
+  
+        <div class="row">
+  
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+              <kendo-grid
+              [data]="view | async"
+              [height]="533"
+              
+              (dataStateChange)="onStateChange($event)"
+              (edit)="editHandler($event)" (remove)="removeHandler($event)"
+              (add)="addHandler($event)"
+              >
+             
+           
+              <ng-template kendoGridToolbarTemplate>
+                <button kendoGridAddCommand >Add new</button>
+              </ng-template>
+              <kendo-grid-column field="AuthorID" title="ID" width="120">
+              </kendo-grid-column>
+              <kendo-grid-column field="AuthorName" title="Name" width="250">
+              </kendo-grid-column>
+              <kendo-grid-column field="History" title="History">
+              </kendo-grid-column>
+              <kendo-grid-command-column title="command" width="250">
+                <ng-template kendoGridCellTemplate>
+                  <button kendoGridEditCommand [primary]="true">Edit</button>
+                  <button kendoGridRemoveCommand>Delete</button>
+                </ng-template>
+              </kendo-grid-command-column>
+            </kendo-grid>
+          </div>
+  
+        </div>
+  
+  
+         <div class="row">
+  
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <edit-author [model]="editDataItem" [isNew]="isNew" (save)="saveHandler($event)" (cancel)="cancelHandler()"></edit-author>
+          </div>
+  
+        </div> 
+   
+      </div>
+    </div>
+  </div>
