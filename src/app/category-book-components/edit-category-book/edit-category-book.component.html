@@ -41,7 +41,13 @@
     </form>
 
     <kendo-dialog-actions>
-        <button class="k-button" (click)="onCancel($event)">Cancel</button>
-        <button class="k-button k-primary" [disabled]="!editForm.valid" (click)="onSave($event)">Save</button>
+        <button class="k-button" (click)="onCancel($event)" >
+                <i class="fas fa-times"></i>
+            Cancel
+        </button>
+        <button class="k-button k-primary" [disabled]="!editForm.valid" (click)="onSave($event)">
+                <i class="fas fa-check"></i>
+                &nbsp; Save
+        </button>
     </kendo-dialog-actions>
 </kendo-dialog>

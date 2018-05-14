@@ -29,7 +29,8 @@ export class ShareService {
         return this._http.get(_url)
         .map((response: Response) => {
             return {
-                data: response["data"]
+                data: response["data"],
+                total:response["total"]
               
             }
           
@@ -80,15 +81,16 @@ export class ShareService {
         
         
     }
-    httpDelete(url: string): Observable < any > {  
-       
+    httpDelete<T>(url: string,entity: T): Observable < any > {  
+        let data = JSON.stringify(entity);  
         const httpOptions = {
             headers: new HttpHeaders({
               'Content-Type':  'application/json',
             
-            })
+            }),
+            body :data
         };
-      
+       
         return this._http.delete(url,httpOptions);
 
         

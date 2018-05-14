@@ -9,10 +9,15 @@ export class CategoryService {
   public URI:string ="category";
 
   constructor(private _shareService:ShareService ) { }
-  public getCategory():Observable<any[]>
+  public getCategory(skip:number, pagesize:number):Observable<any[]>
   {
    
-      return this._shareService.httpGet(Config.URL+this.URI);
+      return this._shareService.httpGet(Config.URL+this.URI+"/"+skip+"/"+pagesize);
+  }
+  public getTotalRecord(skip:number, pagesize:number):Observable<any[]>
+  {
+   
+      return this._shareService.httpGet(Config.URL+this.URI+"/gettotalrecord");
   }
   public SaveCategory(entity:Category,isNew:boolean):Observable<any>
   {
@@ -29,8 +34,8 @@ export class CategoryService {
       
   }
   
-  deleteCategory(objectCategory:Category): Observable < any > {  
-   return  this._shareService.httpDelete(Config.URL+ this.URI+"/"+objectCategory.CategoryID);
+  deleteCategory<Category>(objectCategory:Category): Observable < any > {  
+   return  this._shareService.httpDelete(Config.URL+ this.URI,objectCategory);
   }
 
 }

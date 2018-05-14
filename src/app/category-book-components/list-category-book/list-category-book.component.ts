@@ -19,6 +19,7 @@ export class ListCategoryBookComponent implements OnInit {
   public pageSize = 10;
   public skip = 0;
   private arrCategory: Category[];
+  public totalRecord:number=0;
 
 
 
@@ -29,21 +30,27 @@ export class ListCategoryBookComponent implements OnInit {
   
 
   ngOnInit() {
-     this.loadData();
+     this.loadData(0,this.pageSize);
   }
   public pageChange(event: PageChangeEvent): void {
     this.skip = event.skip;
-    this.loadData();
+   
+    
+  
+   
+    this.loadData(this.skip/this.pageSize,this.pageSize);
   }
-  public loadData() {
-    this.categoryService.getCategory().subscribe(
+  public loadData(skip:number, pagesize:number) {
+    this.categoryService.getCategory(skip,pagesize).subscribe(
       (data) => {
       
         this.arrCategory = data["data"] as Category[];
-        
+        this.totalRecord=data["total"] as number;
+       
+        // console.log(this.totalRecord);
         this.gridView = {
-          data: this.arrCategory.slice(this.skip, this.skip + this.pageSize),
-          total: this.arrCategory.length
+          data: this.arrCategory,
+          total: this.totalRecord
         }
       }
     )
@@ -69,7 +76,7 @@ export class ListCategoryBookComponent implements OnInit {
 
   public saveHandler(category: Category) {
   
-    this.categoryService.SaveCategory(category, this.isNew).subscribe(data=>{this.loadData();});
+    this.categoryService.SaveCategory(category, this.isNew).subscribe(data=>{this.loadData(this.skip,this.pageSize);});
     
 
     this.editDataItem = undefined;
@@ -80,7 +87,7 @@ export class ListCategoryBookComponent implements OnInit {
     
     let  objCategory : Category = dataItem as Category;
     this.categoryService.deleteCategory(objCategory)
-    .subscribe((data)=>{this.loadData()});
+    .subscribe((data)=>{this.loadData(this.skip,this.pageSize)});
     
     
   }
