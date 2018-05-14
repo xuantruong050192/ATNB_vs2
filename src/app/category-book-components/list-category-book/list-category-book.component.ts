@@ -47,7 +47,7 @@ export class ListCategoryBookComponent implements OnInit {
         this.arrCategory = data["data"] as Category[];
         this.totalRecord=data["total"] as number;
        
-        // console.log(this.totalRecord);
+       
         this.gridView = {
           data: this.arrCategory,
           total: this.totalRecord
