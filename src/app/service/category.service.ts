@@ -9,10 +9,15 @@ export class CategoryService {
   public URI:string ="category";
 
   constructor(private _shareService:ShareService ) { }
-  public getCategory(skip:number, pagesize:number):Observable<any[]>
+  public getCategory(searchname:string ,skip:number, pagesize:number):Observable<any[]>
   {
    
-      return this._shareService.httpGet(Config.URL+this.URI+"/"+skip+"/"+pagesize);
+      return this._shareService.httpGet(Config.URL+this.URI+"/"+searchname+"/"+skip+"/"+pagesize);
+  }
+  public getCategoryByName(searchname:string, skip:number, pagesize:number):Observable<any[]>
+  {
+   
+      return this._shareService.httpGet(Config.URL+this.URI+"/"+searchname+"/"+skip+"/"+pagesize);
   }
   public getTotalRecord(skip:number, pagesize:number):Observable<any[]>
   {

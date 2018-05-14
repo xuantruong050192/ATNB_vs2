@@ -16,11 +16,10 @@ export class EditAuthorComponent  {
 
   public active = false;
   public editForm: FormGroup = new FormGroup({
-      'ProductID': new FormControl(),
-      'ProductName': new FormControl('', Validators.required),
-      'UnitPrice': new FormControl(0),
-      'UnitsInStock': new FormControl('', Validators.compose([Validators.required, Validators.pattern('^[0-9]{1,3}')])),
-      'Discontinued': new FormControl(false)
+      'AuthorID': new FormControl(),
+      'AuthorName': new FormControl('', Validators.required),
+      'History': new FormControl()
+      
   });
 
   @Input() public isNew = false;

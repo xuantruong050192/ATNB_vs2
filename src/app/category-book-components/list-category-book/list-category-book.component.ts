@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import { GridDataResult, PageChangeEvent } from '@progress/kendo-angular-grid';
 import { HttpClient } from '@angular/common/http';
 import { Http } from '@angular/http';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-list-category-book',
@@ -20,6 +21,14 @@ export class ListCategoryBookComponent implements OnInit {
   public skip = 0;
   private arrCategory: Category[];
   public totalRecord:number=0;
+  public searchname:string ="0";
+
+  public frmSearch: FormGroup = new FormGroup({
+    
+    'txtSearch': new FormControl('', Validators.required),
+ 
+    
+});
 
 
 
@@ -30,7 +39,16 @@ export class ListCategoryBookComponent implements OnInit {
   
 
   ngOnInit() {
-     this.loadData(0,this.pageSize);
+   
+     this.loadData(this.searchname, 0,this.pageSize);
+    
+  }
+  public onSubmit()
+  {
+    this.searchname = this.frmSearch.value["txtSearch"];
+    console.log(this.searchname);
+    this.loadData(this.searchname,  this.skip/this.pageSize,this.pageSize);
+    
   }
   public pageChange(event: PageChangeEvent): void {
     this.skip = event.skip;
@@ -38,10 +56,10 @@ export class ListCategoryBookComponent implements OnInit {
     
   
    
-    this.loadData(this.skip/this.pageSize,this.pageSize);
+    this.loadData(this.searchname,  this.skip/this.pageSize,this.pageSize);
   }
-  public loadData(skip:number, pagesize:number) {
-    this.categoryService.getCategory(skip,pagesize).subscribe(
+  public loadData(seachname:string, skip:number, pagesize:number) {
+    this.categoryService.getCategory(seachname, skip,pagesize).subscribe(
       (data) => {
       
         this.arrCategory = data["data"] as Category[];
@@ -54,13 +72,6 @@ export class ListCategoryBookComponent implements OnInit {
         }
       }
     )
-
-
-
-
-
-
-
   }
   public addHandler() {
     this.editDataItem = new Category();
@@ -76,7 +87,7 @@ export class ListCategoryBookComponent implements OnInit {
 
   public saveHandler(category: Category) {
   
-    this.categoryService.SaveCategory(category, this.isNew).subscribe(data=>{this.loadData(this.skip,this.pageSize);});
+    this.categoryService.SaveCategory(category, this.isNew).subscribe(data=>{this.loadData( this.searchname,  this.skip,this.pageSize);});
     
 
     this.editDataItem = undefined;
@@ -87,7 +98,7 @@ export class ListCategoryBookComponent implements OnInit {
     
     let  objCategory : Category = dataItem as Category;
     this.categoryService.deleteCategory(objCategory)
-    .subscribe((data)=>{this.loadData(this.skip,this.pageSize)});
+    .subscribe((data)=>{this.loadData(this.searchname,  this.skip,this.pageSize)});
     
     
   }

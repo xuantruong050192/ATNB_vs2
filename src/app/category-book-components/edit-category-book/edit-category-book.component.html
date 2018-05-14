@@ -25,17 +25,9 @@
                     <textarea kendoTextArea  formControlName="Description"></textarea>
 
                 </div>
-                <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.Description.valid || editForm.controls.Description.pristine">
-                    ProductName is required
-                </div>
+               
 
             </div>
-
-
-
-
-
-
         </div>
 
     </form>
@@ -43,7 +35,7 @@
     <kendo-dialog-actions>
         <button class="k-button" (click)="onCancel($event)" >
                 <i class="fas fa-times"></i>
-            Cancel
+                &nbsp; Cancel
         </button>
         <button class="k-button k-primary" [disabled]="!editForm.valid" (click)="onSave($event)">
                 <i class="fas fa-check"></i>

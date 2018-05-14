@@ -10,8 +10,15 @@
       <div class="row">
 
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-          <kendo-grid [data]="view | async" [height]="533" (dataStateChange)="onStateChange($event)" (edit)="editHandler($event)" (remove)="removeHandler($event)"
-            (add)="addHandler($event)">
+          <kendo-grid [data]="gridView"
+          [height]="550"
+          [pageSize]="pageSize"
+          [skip]="skip"
+          [pageable]="true"
+          (pageChange)="pageChange($event)"
+          (dataStateChange)="onStateChange($event)"
+          (edit)="editHandler($event)" (remove)="removeHandler($event)"
+          (add)="addHandler($event)">
 
 
             <ng-template kendoGridToolbarTemplate>
