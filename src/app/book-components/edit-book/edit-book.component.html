@@ -8,42 +8,85 @@
 
         <div class="card">
           <div class="card-block">
-            <form class="k-form">
+            <form class="k-form" 
+            [formGroup]="myForm"
+            novalidate (ngSubmit)="onSubmit()"
+            >
               <label class="k-form-field">
                 
-                <input class="k-textbox" placeholder="Tựa sách" />
+                <input class="k-textbox" placeholder="Tựa sách"  formControlName="Title"/>
+                <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.Title.valid || editForm.controls.Title.pristine">
+                    Title is required
+                  </div>
               </label>
               <label class="k-form-field">
                
-                <input class="k-textbox" placeholder="Mô tả" />
+                <input class="k-textbox" placeholder="Mô tả" formControlName="Summary" />
               </label>
             
               <label class="k-form-field">
                 <span>Danh mục</span>
-                <kendo-dropdownlist name="gender" [data]="genders" [textField]="'text'" [valueField]="'value'" [(ngModel)]="gender" style="width: 100%">
+                <kendo-dropdownlist name="category"
+                 [data]="arrCategory" 
+                 [textField]="'CategoryName'" 
+                 [valueField]="'CategoryID'" 
+                 [(ngModel)]="categoryDefault"
+                 [defaultItem]="{ CategoryName: 'Chọn danh mục', CategoryID: '0' }"
+                 [valuePrimitive]="true"
+                 required 
+                 formControlName="CategoryID"
+               
+                 style="width: 100%">
                 </kendo-dropdownlist>
               </label>
               <label class="k-form-field">
                 <span>Tác giả</span>
-                <kendo-dropdownlist name="gender" [data]="genders" [textField]="'text'" [valueField]="'value'" [(ngModel)]="gender" style="width: 100%">
+                <kendo-dropdownlist name="author" 
+                [data]="arrAuthor" 
+                [textField]="'AuthorName'" 
+                [valueField]="'AuthorID'" 
+                [(ngModel)]="authorDefault"
+                [defaultItem]="{ AuthorName: 'Chọn tác giả', AuthorID: '0' }"
+                [valuePrimitive]="true"
+                required
+                formControlName="AuthorID"
+                style="width: 100%">
                 </kendo-dropdownlist>
               </label>
               <label class="k-form-field">
                 <span>Nhà xuất bản</span>
-                <kendo-dropdownlist name="gender" [data]="genders" [textField]="'text'" [valueField]="'value'" [(ngModel)]="gender" style="width: 100%">
+                <kendo-dropdownlist name="publisher" 
+                [data]="arrPublisher" 
+                [textField]="'PublisherName'" 
+                [valueField]="'PublisherID'" 
+                [defaultItem]="{ PublisherName: 'Chọn nhà xuất bản', PublisherID: '0' }"
+                [(ngModel)]="publisherDefault"
+                formControlName="PublisherID"
+                [valuePrimitive]="true"
+                required
+                style="width: 100%">
                 </kendo-dropdownlist>
               </label>
               <label class="k-form-field">
                 <span>Giá</span>
-                <kendo-numerictextbox formControlName="numeric" [min]="0" style="width: 100%"></kendo-numerictextbox>
+                <kendo-numerictextbox formControlName="Price" [min]="0" style="width: 100%"></kendo-numerictextbox>
               </label>
               <label class="k-form-field">
                 <span>Số lượng</span>
-                <kendo-numerictextbox formControlName="numeric" [min]="0" style="width: 100%"></kendo-numerictextbox>
+                <kendo-numerictextbox formControlName="Quantity" [min]="0" style="width: 100%"></kendo-numerictextbox>
               </label>
               <label class="k-form-field">
                 <span>Trạng thái</span>
-                <kendo-dropdownlist name="gender" [data]="genders" [textField]="'text'" [valueField]="'value'" [(ngModel)]="gender" style="width: 100%">
+                <kendo-dropdownlist name="publisher" 
+                [data]="arrPublisher" 
+                [textField]="'PublisherName'" 
+                [valueField]="'PublisherID'" 
+                [defaultItem]="{ PublisherName: 'Chọn nhà xuất bản', PublisherID: '0' }"
+                [(ngModel)]="publisherDefault"
+                formControlName="PublisherID"
+                [valuePrimitive]="true"
+                required
+                style="width: 100%">
                 </kendo-dropdownlist>
               </label>
               <label style="display: block; margin: .8em 0 .2em">Avatar:
@@ -56,11 +99,11 @@
 
                 <button kendoButton (click)="onButtonClick()"   type="submit" [routerLink]="['/book-management']"  style="background: red;width: 200px;color: white"   >
                   <i class="glyphicon glyphicon-arrow-left"></i>
-                  <span>Quay lại</span>
+                  &nbsp;  &nbsp; Quay lại
                 </button>
                 <button kendoButton (click)="onButtonClick()" type="submit"  style="background: green;width: 200px;color: white"   >
                   <i class="glyphicon glyphicon-arrow-right"></i>
-                  Tạo
+                  &nbsp; &nbsp; Tạo
                 </button>
 
               </label>

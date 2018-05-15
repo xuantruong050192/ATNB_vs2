@@ -65,7 +65,8 @@ import { ShareService } from '../../service/shareservice';
     DropDownsModule,
     InputsModule,
     UploadModule,
-    ButtonsModule
+    ButtonsModule,
+    DropDownsModule
   ],
   declarations: [
     DashboardComponent,

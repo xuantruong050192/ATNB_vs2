@@ -11,7 +11,7 @@
 
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
           <kendo-grid [data]="gridView"
-          [height]="550"
+          [height]="750"
           [pageSize]="pageSize"
           [skip]="skip"
           [pageable]="true"
@@ -22,31 +22,49 @@
 
 
             <ng-template kendoGridToolbarTemplate>
-              <div class="row">
+                <div class="row">
 
-                <div class="col-xs-6 col-sm-6 col-md-8 col-lg-6">
-                  <button kendoGridAddCommand style="background: green;width: 100px;color: white">
-                    <i class="fas fa-plus">
-
-                    </i>
-                    &nbsp; Add new</button>
-                </div>
-
-                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                  <div class="input-group">
-                    <input type="text" class="form-control SearchBar" placeholder="Search for..." style="border:1px solid;border-color:gainsboro; border-bottom:0px">
-
-                    <button kendoGridAddCommand>
-                      <i class="glyphicon glyphicon-search"></i>
-                      &nbsp; Search</button>
-
-
+                    <div class="col-xs-6 col-sm-6 col-md-8 col-lg-6">
+                      <button kendoGridAddCommand [routerLink]="['/edit-book']" style="background: green;width: 100px;color: white">
+                        <i class="fas fa-plus">
+    
+                        </i>
+                        &nbsp; Add new</button>
+                    </div>
+    
+    
                   </div>
-                  <!-- /input-group -->
-                </div>
-
-
-              </div>
+    
+                  <div class="row">
+    
+                  </div>
+    
+    
+                  <div class="row">
+    
+                    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                      <kendo-combobox [data]="listItems" [value]="'15'" (valueChange)="valueChange($event)" (selectionChange)="selectionChange($event)">
+                      </kendo-combobox>
+                    </div>
+    
+                    <div class="col-xs-10 col-sm-10 col-md-9 col-lg-10">
+    
+                      <div class="input-group">
+                        <input type="text" class="form-control SearchBar" placeholder="Search for..." style="border:1px solid;border-color:gainsboro; border-bottom:0px">
+    
+                        <button kendoGridAddCommand>
+                          <i class="glyphicon glyphicon-search"></i>
+                          &nbsp; Search</button>
+    
+    
+                      </div>
+                      <!-- /input-group -->
+    
+                    </div>
+    
+    
+                  </div>
+    
             </ng-template>
             <kendo-grid-column field="PublisherID" title="ID" width="120">
             </kendo-grid-column>

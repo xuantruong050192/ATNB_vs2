@@ -15,6 +15,11 @@ export class PublisherService {
    
       return this._shareService.httpGet(Config.URL+this.URI+"/"+searchname+"/"+skip+"/"+pagesize);
   }
+  public getAllPublisher():Observable<any[]>
+  {
+   
+      return this._shareService.httpGet(Config.URL+this.URI+"/getall");
+  }
   
   public SavePublisher(entity:Publisher,isNew:boolean):Observable<any>
   {

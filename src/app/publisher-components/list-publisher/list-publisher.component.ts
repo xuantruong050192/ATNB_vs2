@@ -10,11 +10,15 @@ import { PublisherService } from '../../service/publisher.service';
   styleUrls: ['./list-publisher.component.scss']
 })
 export class ListPublisherComponent implements OnInit {
+  public listItems: Array<string> = [
+    '10', '15', '20', '25',
+    '30'
+  ];
 
   public editDataItem: Publisher;
   public isNew: boolean;
   public gridView: GridDataResult;
-  public pageSize = 10;
+  public pageSize = 15;
   public skip = 0;
   private arrCategory: Publisher[];
   public totalRecord:number=0;
@@ -33,6 +37,19 @@ export class ListPublisherComponent implements OnInit {
  
    
   }
+  public  onKey()
+  {
+    this.searchname = this.frmSearch.value["txtSearch"];
+    if(this.searchname.length < 1)
+    {
+      this.searchname="0";
+
+    }
+   
+   
+    this.loadData(this.searchname,  this.skip/this.pageSize,this.pageSize);
+
+  }
   
 
   ngOnInit() {
@@ -40,10 +57,25 @@ export class ListPublisherComponent implements OnInit {
      this.loadData(this.searchname, 0,this.pageSize);
     
   }
+  public valueChange(value: any): void {
+    this.pageSize = value;
+    this.loadData(this.searchname, this.skip / this.pageSize, this.pageSize);
+   
+}
+
+public selectionChange(value: any): void {
+  this.pageSize = value;
+  this.loadData(this.searchname, this.skip / this.pageSize, this.pageSize);
+}
+
   public onSubmit()
   {
     this.searchname = this.frmSearch.value["txtSearch"];
-    console.log(this.searchname);
+    if(this.searchname.length < 1)
+    {
+      this.searchname="0";
+
+    }
     this.loadData(this.searchname,  this.skip/this.pageSize,this.pageSize);
     
   }

@@ -11,6 +11,9 @@ import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpProgressEvent
 import { of } from 'rxjs/observable/of';
 import { concat } from 'rxjs/observable/concat';
 import { delay } from 'rxjs/operators/delay';
+import { BookService } from '../../service/book.service';
+import { Book } from '../../model/book';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 
 @Component({
@@ -19,6 +22,101 @@ import { delay } from 'rxjs/operators/delay';
   styleUrls: ['./list-book.component.scss']
 })
 export class ListBookComponent implements OnInit {
+  public listItems: Array<string> = [
+    '10', '15', '20', '25',
+    '30'
+  ];
+  public editDataItem: Book
+  public isNew: boolean;
+  public gridView: GridDataResult;
+  public pageSize = 15;
+  public skip = 0;
+  private arrBook: Book[];
+  public totalRecord: number = 0;
+  public searchname: string = "0";
+
+
+  constructor(public bookService: BookService) {
+
+  }
+
+  public ngOnInit(): void {
+    this.loadData(this.searchname,0,this.pageSize);
+
+  }
+  public frmSearch: FormGroup = new FormGroup({
+
+    'txtSearch': new FormControl('', Validators.required),
+
+
+  });
+  public valueChange(value: any): void {
+    this.pageSize = value;
+    this.loadData(this.searchname, this.skip / this.pageSize, this.pageSize);
+
+  }
+
+  public selectionChange(value: any): void {
+    this.pageSize = value;
+    this.loadData(this.searchname, this.skip / this.pageSize, this.pageSize);
+  }
+  public onKey() {
+    this.searchname = this.frmSearch.value["txtSearch"];
+    if (this.searchname.length < 1) {
+      this.searchname = "0";
+
+    }
+
+
+    this.loadData(this.searchname, this.skip / this.pageSize, this.pageSize);
+
+  }
+  public onSubmit() {
+    this.searchname = this.frmSearch.value["txtSearch"];
+    if (this.searchname.length < 1) {
+      this.searchname = "0";
+
+    }
+    this.loadData(this.searchname, this.skip / this.pageSize, this.pageSize);
+
+  }
+  public loadData(seachname: string, skip: number, pagesize: number) {
+    this.bookService.getBook(seachname, skip, pagesize).subscribe(
+      (data) => {
+
+        this.arrBook = data["data"] as any[];
+        this.totalRecord = data["total"] as number;
+
+
+        this.gridView = {
+          data: this.arrBook,
+          total: this.totalRecord
+        }
+      }
+    )
+  }
+ 
+  public addHandler() {
+    this.editDataItem = new Book();
+     this.isNew = true;
+  }
+  public editHandler({ dataItem }) {
+    this.editDataItem = dataItem;
+    this.isNew = false;
+  }
+  public cancelHandler() {
+    this.editDataItem = undefined;
+  }
+
+  public saveHandlere(entity:Book) {
+    this.bookService.SaveBook(entity, this.isNew);
+
+    this.editDataItem = undefined;
+  }
+
+  public removeHandler({ dataItem }) {
+    this.bookService.deleteBook(dataItem);
+  }
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     if (req.url === 'saveUrl') {
       const events: Observable<HttpEvent<any>>[] = [0, 30, 60, 100].map((x) => of(<HttpProgressEvent>{
@@ -34,60 +132,12 @@ export class ListBookComponent implements OnInit {
     }
 
     if (req.url === 'removeUrl') {
-        return of(new HttpResponse({ status: 200 }));
+      return of(new HttpResponse({ status: 200 }));
     }
 
     return next.handle(req);
   }
 
-  public view: Observable<GridDataResult>;
-  public gridState: State = {
-    sort: [],
-    skip: 0,
-    take: 10
-  };
-  public gridData: any[] = products;
-  public editDataItem: Product;
-  public isNew: boolean;
-  private editService: EditService;
-
-  constructor( @Inject(EditService) editServiceFactory: any
-              
-     ) {
-    this.editService = editServiceFactory();
-  }
-
-  public ngOnInit(): void {
-    this.view = this.editService.pipe(map(data => process(data, this.gridState)));
-
-    this.editService.read();
-  }
-  public onStateChange(state: State) {
-    this.gridState = state;
-
-    this.editService.read();
-  }
-  public addHandler() {
-    // this.editDataItem = new Product();
-    // this.isNew = true;
-  }
-  public editHandler({ dataItem }) {
-    this.editDataItem = dataItem;
-    this.isNew = false;
-  }
-  public cancelHandler() {
-    this.editDataItem = undefined;
-  }
-
-  public saveHandler(product: Product) {
-    this.editService.save(product, this.isNew);
-
-    this.editDataItem = undefined;
-  }
-
-  public removeHandler({ dataItem }) {
-    this.editService.remove(dataItem);
-  }
 
 
 }

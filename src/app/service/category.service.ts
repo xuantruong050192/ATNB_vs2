@@ -14,10 +14,10 @@ export class CategoryService {
    
       return this._shareService.httpGet(Config.URL+this.URI+"/"+searchname+"/"+skip+"/"+pagesize);
   }
-  public getCategoryByName(searchname:string, skip:number, pagesize:number):Observable<any[]>
+  public getAllCategory():Observable<any[]>
   {
    
-      return this._shareService.httpGet(Config.URL+this.URI+"/"+searchname+"/"+skip+"/"+pagesize);
+      return this._shareService.httpGet(Config.URL+this.URI+"/getall");
   }
   public getTotalRecord(skip:number, pagesize:number):Observable<any[]>
   {

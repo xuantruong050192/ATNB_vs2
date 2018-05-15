@@ -52,18 +52,7 @@ export class ShareService {
        console.log(body);
     
         return this._http.post(_url, body,httpOptions);
-        // .subscribe(
-        //     (val) => {
-        //         console.log("POST call successful value returned in body", 
-        //                     val);
-               
-        //     },
-        //     response => {
-        //         console.log("POST call in error", response);
-        //     },
-        //     () => {
-        //         console.log("The POST observable is now completed.");
-        //     });  
+       
         
         
     }

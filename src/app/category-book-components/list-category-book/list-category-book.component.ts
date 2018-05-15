@@ -13,59 +13,87 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
   styleUrls: ['./list-category-book.component.scss']
 })
 export class ListCategoryBookComponent implements OnInit {
+  public listItems: Array<string> = [
+    '10', '15', '20', '25',
+    '30'
+  ];
   public editDataItem: Category;
   public isNew: boolean;
   public view: Observable<GridDataResult>;
   public gridView: GridDataResult;
-  public pageSize = 10;
+  public pageSize = 15;
   public skip = 0;
   private arrCategory: Category[];
-  public totalRecord:number=0;
-  public searchname:string ="0";
+  public totalRecord: number = 0;
+  public searchname: string = "0";
 
-  public frmSearch: FormGroup = new FormGroup({
-    
-    'txtSearch': new FormControl('', Validators.required),
- 
-    
-});
 
 
 
   constructor(private categoryService: CategoryService) {
- 
-   
+
+
   }
-  
+
 
   ngOnInit() {
-   
-     this.loadData(this.searchname, 0,this.pageSize);
-    
+
+    this.loadData(this.searchname, 0, this.pageSize);
+
   }
-  public onSubmit()
-  {
+  public frmSearch: FormGroup = new FormGroup({
+
+    'txtSearch': new FormControl('', Validators.required),
+
+
+  });
+
+  public valueChange(value: any): void {
+    this.pageSize = value;
+    this.loadData(this.searchname, this.skip / this.pageSize, this.pageSize);
+
+  }
+
+  public selectionChange(value: any): void {
+    this.pageSize = value;
+    this.loadData(this.searchname, this.skip / this.pageSize, this.pageSize);
+  }
+  public onKey() {
     this.searchname = this.frmSearch.value["txtSearch"];
-    console.log(this.searchname);
-    this.loadData(this.searchname,  this.skip/this.pageSize,this.pageSize);
-    
+    if (this.searchname.length < 1) {
+      this.searchname = "0";
+
+    }
+
+
+    this.loadData(this.searchname, this.skip / this.pageSize, this.pageSize);
+
+  }
+  public onSubmit() {
+    this.searchname = this.frmSearch.value["txtSearch"];
+    if (this.searchname.length < 1) {
+      this.searchname = "0";
+
+    }
+    this.loadData(this.searchname, this.skip / this.pageSize, this.pageSize);
+
   }
   public pageChange(event: PageChangeEvent): void {
     this.skip = event.skip;
-   
-    
-  
-   
-    this.loadData(this.searchname,  this.skip/this.pageSize,this.pageSize);
+
+
+
+
+    this.loadData(this.searchname, this.skip / this.pageSize, this.pageSize);
   }
-  public loadData(seachname:string, skip:number, pagesize:number) {
-    this.categoryService.getCategory(seachname, skip,pagesize).subscribe(
+  public loadData(seachname: string, skip: number, pagesize: number) {
+    this.categoryService.getCategory(seachname, skip, pagesize).subscribe(
       (data) => {
-      
+
         this.arrCategory = data["data"] as Category[];
-        this.totalRecord=data["total"] as number;
-       
-       
+        this.totalRecord = data["total"] as number;
+
+
         this.gridView = {
           data: this.arrCategory,
           total: this.totalRecord
@@ -86,21 +114,21 @@ export class ListCategoryBookComponent implements OnInit {
   }
 
   public saveHandler(category: Category) {
-  
-    this.categoryService.SaveCategory(category, this.isNew).subscribe(data=>{this.loadData( this.searchname,  this.skip,this.pageSize);});
-    
+
+    this.categoryService.SaveCategory(category, this.isNew).subscribe(data => { this.loadData(this.searchname, this.skip, this.pageSize); });
+
 
     this.editDataItem = undefined;
   }
 
   public removeHandler({ dataItem }) {
-  
-    
-    let  objCategory : Category = dataItem as Category;
+
+
+    let objCategory: Category = dataItem as Category;
     this.categoryService.deleteCategory(objCategory)
-    .subscribe((data)=>{this.loadData(this.searchname,  this.skip,this.pageSize)});
-    
-    
+      .subscribe((data) => { this.loadData(this.searchname, this.skip, this.pageSize) });
+
+
   }
 
 }

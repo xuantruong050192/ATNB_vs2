@@ -16,6 +16,11 @@ export class AuthorService {
    
       return this._shareService.httpGet(Config.URL+this.URI+"/"+searchname+"/"+skip+"/"+pagesize);
   }
+  public getAllAuthor():Observable<any[]>
+  {
+   
+      return this._shareService.httpGet(Config.URL+this.URI+"/getall");
+  }
   
  
   public SaveAuthor(entity:Author,isNew:boolean):Observable<any>
