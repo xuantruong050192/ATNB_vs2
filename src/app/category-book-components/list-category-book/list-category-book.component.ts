@@ -5,7 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import { GridDataResult, PageChangeEvent } from '@progress/kendo-angular-grid';
 import { HttpClient } from '@angular/common/http';
 import { Http } from '@angular/http';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators, NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-list-category-book',
@@ -41,13 +41,7 @@ export class ListCategoryBookComponent implements OnInit {
     this.loadData(this.searchname, 0, this.pageSize);
 
   }
-  public frmSearch: FormGroup = new FormGroup({
-
-    'txtSearch': new FormControl('', Validators.required),
-
-
-  });
-
+  
   public valueChange(value: any): void {
     this.pageSize = value;
     this.loadData(this.searchname, this.skip / this.pageSize, this.pageSize);
@@ -58,23 +52,34 @@ export class ListCategoryBookComponent implements OnInit {
     this.pageSize = value;
     this.loadData(this.searchname, this.skip / this.pageSize, this.pageSize);
   }
-  public onKey() {
-    this.searchname = this.frmSearch.value["txtSearch"];
+  public enterSearch(frmSearch:NgForm)
+  {
+    this.searchname = frmSearch.value.txtSearch;
+    
     if (this.searchname.length < 1) {
       this.searchname = "0";
 
     }
+   this.loadData(this.searchname, this.skip / this.pageSize, this.pageSize);
+  }
+  public blurSearch(frmSearch:NgForm)
+  {
+    this.searchname = frmSearch.value.txtSearch;
+    
+    if (this.searchname.length < 1) {
+      this.searchname = "0";
 
-
-    this.loadData(this.searchname, this.skip / this.pageSize, this.pageSize);
+    }
+   this.loadData(this.searchname, this.skip / this.pageSize, this.pageSize);
 
   }
-  public onSubmit() {
-    this.searchname = this.frmSearch.value["txtSearch"];
-    if (this.searchname.length < 1) {
-      this.searchname = "0";
+  public onSubmit(frmSearch:NgForm) {
+    this.searchname = frmSearch.value.txtSearch;
+    
+     if (this.searchname.length < 1) {
+       this.searchname = "0";
 
-    }
+     }
     this.loadData(this.searchname, this.skip / this.pageSize, this.pageSize);
 
   }

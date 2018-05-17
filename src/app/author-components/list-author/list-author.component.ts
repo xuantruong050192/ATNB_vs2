@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Author } from '../../model/author';
 import { GridDataResult, PageChangeEvent } from '@progress/kendo-angular-grid';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators, NgForm } from '@angular/forms';
 import { AuthorService } from '../../service/author.service';
 
 @Component({
@@ -38,30 +38,43 @@ public selectionChange(value: any): void {
   this.loadData(this.searchname, this.skip / this.pageSize, this.pageSize);
 }
 
-  public frmSearch: FormGroup = new FormGroup({
-    'txtSearch': new FormControl('', Validators.required),
-  });
-  public onKey() {
-    this.searchname = this.frmSearch.value["txtSearch"];
-    if (this.searchname.length < 1) {
-      this.searchname = "0";
+public enterSearch(frmSearch:NgForm)
+{
+  this.searchname = frmSearch.value.txtSearch;
+  
+  if (this.searchname.length < 1) {
+    this.searchname = "0";
 
-    }
-    this.loadData(this.searchname, this.skip / this.pageSize, this.pageSize);
   }
+ this.loadData(this.searchname, this.skip / this.pageSize, this.pageSize);
+}
+public blurSearch(frmSearch:NgForm)
+{
+  this.searchname = frmSearch.value.txtSearch;
+  
+  if (this.searchname.length < 1) {
+    this.searchname = "0";
+
+  }
+ this.loadData(this.searchname, this.skip / this.pageSize, this.pageSize);
+
+}
+public onSubmit(frmSearch:NgForm) {
+  this.searchname = frmSearch.value.txtSearch;
+  
+   if (this.searchname.length < 1) {
+     this.searchname = "0";
+
+   }
+  this.loadData(this.searchname, this.skip / this.pageSize, this.pageSize);
+
+}
 
   public addHandler() {
     this.editDataItem = new Author()
     this.isNew = true;
   }
-  public onSubmit() {
-    this.searchname = this.frmSearch.value["txtSearch"];
-    if (this.searchname.length < 1) {
-      this.searchname = "0";
-
-    }
-    this.loadData(this.searchname, this.skip / this.pageSize, this.pageSize);
-  }
+  
   public pageChange(event: PageChangeEvent): void {
     this.skip = event.skip;
     this.loadData(this.searchname, this.skip / this.pageSize, this.pageSize);
@@ -72,7 +85,7 @@ public selectionChange(value: any): void {
 
         this.arrCategory = data["data"] as Author[];
         this.totalRecord = data["total"] as number;
-
+        
 
         this.gridView = {
           data: this.arrCategory,

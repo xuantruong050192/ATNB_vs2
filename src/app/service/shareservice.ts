@@ -17,6 +17,7 @@ import { CategoryService } from './category.service';
 import { Config } from './config';
 import { Category } from '../model/category';
 import { of } from 'rxjs/observable/of';
+import { FileInfo } from '@progress/kendo-angular-upload';
 
 
 @Injectable()
@@ -40,6 +41,11 @@ export class ShareService {
         
         
     }
+    httpPostFile(_url:string, file:  any):Observable<any>
+    {
+        return this._http.post(_url, file);
+
+    }
     httpPost<T>(_url:string,entity:T):Observable<any> {
        
         const httpOptions = {
@@ -49,7 +55,7 @@ export class ShareService {
             })
         };
         let body = JSON.stringify(entity);  
-       console.log(body);
+     
     
         return this._http.post(_url, body,httpOptions);
        

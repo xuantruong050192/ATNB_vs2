@@ -49,16 +49,23 @@
     
                     <div class="col-xs-10 col-sm-10 col-md-9 col-lg-10">
     
-                      <div class="input-group">
-                        <input type="text" class="form-control SearchBar" placeholder="Search for..." style="border:1px solid;border-color:gainsboro; border-bottom:0px">
-    
-                        <button kendoGridAddCommand>
-                          <i class="glyphicon glyphicon-search"></i>
-                          &nbsp; Search</button>
-    
-    
-                      </div>
-                      <!-- /input-group -->
+                        <form #frmSearch="ngForm" (ngSubmit)="onSubmit(frmSearch)" novalidate>
+                            <div class="input-group">
+                              <input type="text" class="form-control SearchBar" placeholder="Search for..."
+                              name="txtSearch"
+                              ngModel
+                              (mouseenter)="enterSearch(frmSearch)"
+                              (blur)="blurSearch(frmSearch)"
+                              style="border:1px solid;border-color:gainsboro; border-bottom:0px">
+        
+                              <button kendoButton>
+                                <i class="glyphicon glyphicon-search"></i>
+                                &nbsp; Search</button>
+        
+        
+                            </div>
+                            <!-- /input-group -->
+                          </form>
     
                     </div>
     

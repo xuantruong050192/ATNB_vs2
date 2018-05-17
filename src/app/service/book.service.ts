@@ -3,6 +3,7 @@ import { ShareService } from './shareservice';
 import { Observable } from 'rxjs/Observable';
 import { Config } from './config';
 import { Book } from '../model/book';
+import { FileInfo } from '@progress/kendo-angular-upload';
 
 @Injectable()
 export class BookService 
@@ -19,6 +20,15 @@ export class BookService
    
       return this._shareService.httpGet(Config.URL+this.URI+"/"+searchname+"/"+skip+"/"+pagesize);
   }
+  public postFile(files: any):Observable<any>
+  {
+    return this._shareService.httpPostFile(Config.URL+this.URI+"/uploadfile",files);
+
+  }
+  
+   
+     
+  
   public getBookByName(searchname:string, skip:number, pagesize:number):Observable<any[]>
   {
    

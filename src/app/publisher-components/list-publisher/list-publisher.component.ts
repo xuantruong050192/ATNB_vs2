@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Publisher } from '../../model/publisher';
 import { GridDataResult, PageChangeEvent } from '@progress/kendo-angular-grid';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators, NgForm } from '@angular/forms';
 import { PublisherService } from '../../service/publisher.service';
 
 @Component({
@@ -24,39 +24,53 @@ export class ListPublisherComponent implements OnInit {
   public totalRecord:number=0;
   public searchname:string ="0";
 
-  public frmSearch: FormGroup = new FormGroup({
-    
-    'txtSearch': new FormControl('', Validators.required),
- 
-    
-});
-
+  
 
 
   constructor(private publisherService: PublisherService) {
  
    
   }
-  public  onKey()
+  ngOnInit() {
+   
+    this.loadData(this.searchname, 0,this.pageSize);
+   
+ }
+ //Search 
+  public enterSearch(frmSearch:NgForm)
   {
-    this.searchname = this.frmSearch.value["txtSearch"];
-    if(this.searchname.length < 1)
-    {
-      this.searchname="0";
+    this.searchname = frmSearch.value.txtSearch;
+    
+    if (this.searchname.length < 1) {
+      this.searchname = "0";
 
     }
-   
-   
-    this.loadData(this.searchname,  this.skip/this.pageSize,this.pageSize);
+   this.loadData(this.searchname, this.skip / this.pageSize, this.pageSize);
+  }
+  public blurSearch(frmSearch:NgForm)
+  {
+    this.searchname = frmSearch.value.txtSearch;
+    
+    if (this.searchname.length < 1) {
+      this.searchname = "0";
+
+    }
+   this.loadData(this.searchname, this.skip / this.pageSize, this.pageSize);
+
+  }
+  public onSubmit(frmSearch:NgForm) {
+    this.searchname = frmSearch.value.txtSearch;
+    
+     if (this.searchname.length < 1) {
+       this.searchname = "0";
+
+     }
+    this.loadData(this.searchname, this.skip / this.pageSize, this.pageSize);
 
   }
   
-
-  ngOnInit() {
-   
-     this.loadData(this.searchname, 0,this.pageSize);
-    
-  }
+//Page Change
+ 
   public valueChange(value: any): void {
     this.pageSize = value;
     this.loadData(this.searchname, this.skip / this.pageSize, this.pageSize);
@@ -66,19 +80,9 @@ export class ListPublisherComponent implements OnInit {
 public selectionChange(value: any): void {
   this.pageSize = value;
   this.loadData(this.searchname, this.skip / this.pageSize, this.pageSize);
-}
+}  
 
-  public onSubmit()
-  {
-    this.searchname = this.frmSearch.value["txtSearch"];
-    if(this.searchname.length < 1)
-    {
-      this.searchname="0";
-
-    }
-    this.loadData(this.searchname,  this.skip/this.pageSize,this.pageSize);
-    
-  }
+  
   public pageChange(event: PageChangeEvent): void {
     this.skip = event.skip;
    
@@ -87,6 +91,7 @@ public selectionChange(value: any): void {
    
     this.loadData(this.searchname,  this.skip/this.pageSize,this.pageSize);
   }
+  //Load data
   public loadData(seachname:string, skip:number, pagesize:number) {
     this.publisherService.getPublisher(seachname, skip,pagesize).subscribe(
       (data) => {

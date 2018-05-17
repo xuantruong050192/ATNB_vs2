@@ -13,7 +13,8 @@ import { concat } from 'rxjs/observable/concat';
 import { delay } from 'rxjs/operators/delay';
 import { BookService } from '../../service/book.service';
 import { Book } from '../../model/book';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators, NgForm } from '@angular/forms';
+import { SharedataService } from '../../service/sharedata.service';
 
 
 @Component({
@@ -36,7 +37,8 @@ export class ListBookComponent implements OnInit {
   public searchname: string = "0";
 
 
-  constructor(public bookService: BookService) {
+  constructor(public bookService: BookService,
+              public _router :Router, public _shareDataService: SharedataService     ) {
 
   }
 
@@ -44,12 +46,7 @@ export class ListBookComponent implements OnInit {
     this.loadData(this.searchname,0,this.pageSize);
 
   }
-  public frmSearch: FormGroup = new FormGroup({
-
-    'txtSearch': new FormControl('', Validators.required),
-
-
-  });
+  
   public valueChange(value: any): void {
     this.pageSize = value;
     this.loadData(this.searchname, this.skip / this.pageSize, this.pageSize);
@@ -60,26 +57,39 @@ export class ListBookComponent implements OnInit {
     this.pageSize = value;
     this.loadData(this.searchname, this.skip / this.pageSize, this.pageSize);
   }
-  public onKey() {
-    this.searchname = this.frmSearch.value["txtSearch"];
-    if (this.searchname.length < 1) {
-      this.searchname = "0";
-
-    }
-
-
-    this.loadData(this.searchname, this.skip / this.pageSize, this.pageSize);
+  public enterSearch(frmSearch:NgForm)
+{
+  this.searchname = frmSearch.value.txtSearch;
+  
+  if (this.searchname.length < 1) {
+    this.searchname = "0";
 
   }
-  public onSubmit() {
-    this.searchname = this.frmSearch.value["txtSearch"];
-    if (this.searchname.length < 1) {
-      this.searchname = "0";
-
-    }
-    this.loadData(this.searchname, this.skip / this.pageSize, this.pageSize);
+ this.loadData(this.searchname, this.skip / this.pageSize, this.pageSize);
+}
+public blurSearch(frmSearch:NgForm)
+{
+  this.searchname = frmSearch.value.txtSearch;
+  
+  if (this.searchname.length < 1) {
+    this.searchname = "0";
 
   }
+ this.loadData(this.searchname, this.skip / this.pageSize, this.pageSize);
+
+}
+public onSubmit(frmSearch:NgForm) {
+  this.searchname = frmSearch.value.txtSearch;
+  
+   if (this.searchname.length < 1) {
+     this.searchname = "0";
+
+   }
+  this.loadData(this.searchname, this.skip / this.pageSize, this.pageSize);
+
+}
+  
+  
   public loadData(seachname: string, skip: number, pagesize: number) {
     this.bookService.getBook(seachname, skip, pagesize).subscribe(
       (data) => {
@@ -96,47 +106,66 @@ export class ListBookComponent implements OnInit {
     )
   }
  
-  public addHandler() {
-    this.editDataItem = new Book();
-     this.isNew = true;
-  }
+ 
   public editHandler({ dataItem }) {
     this.editDataItem = dataItem;
     this.isNew = false;
-  }
-  public cancelHandler() {
-    this.editDataItem = undefined;
-  }
+    this._shareDataService.ShareData={
+      IsNew: this.isNew,
+      Book:this.editDataItem,
+      Title:'Edit Book'
 
-  public saveHandlere(entity:Book) {
-    this.bookService.SaveBook(entity, this.isNew);
-
-    this.editDataItem = undefined;
+    };
+   
+    this._router.navigate(['/edit-book'],)
+   
   }
+  public addHandler()
+  {
+    
+    this.editDataItem = new Book();
+    this.isNew = true;
+    this._shareDataService.ShareData={
+      IsNew: this.isNew,
+      Book:this.editDataItem,
+      Title:'Add Book'
 
+    };
+   
+    this._router.navigate(['/edit-book'],)
+
+  }
   public removeHandler({ dataItem }) {
-    this.bookService.deleteBook(dataItem);
+
+
+    let objBook: Book = dataItem as Book;
+    this.bookService.deleteBook(objBook)
+      .subscribe((data) => { this.loadData(this.searchname, this.skip, this.pageSize) });
+
+
   }
-  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    if (req.url === 'saveUrl') {
-      const events: Observable<HttpEvent<any>>[] = [0, 30, 60, 100].map((x) => of(<HttpProgressEvent>{
-        type: HttpEventType.UploadProgress,
-        loaded: x,
-        total: 100
-      }).pipe(delay(1000)));
+  
+  
+  // intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+  //   if (req.url === 'saveUrl') {
+  //     const events: Observable<HttpEvent<any>>[] = [0, 30, 60, 100].map((x) => of(<HttpProgressEvent>{
+  //       type: HttpEventType.UploadProgress,
+  //       loaded: x,
+  //       total: 100
+  //     }).pipe(delay(1000)));
 
-      const success = of(new HttpResponse({ status: 200 })).pipe(delay(1000));
-      events.push(success);
+  //     const success = of(new HttpResponse({ status: 200 })).pipe(delay(1000));
+  //     events.push(success);
 
-      return concat(...events);
-    }
+  //     return concat(...events);
+  //   }
 
-    if (req.url === 'removeUrl') {
-      return of(new HttpResponse({ status: 200 }));
-    }
+  //   if (req.url === 'removeUrl') {
+  //     return of(new HttpResponse({ status: 200 }));
+  //   }
 
-    return next.handle(req);
-  }
+  //   return next.handle(req);
+  // }
 
 
 

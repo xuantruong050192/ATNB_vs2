@@ -45,6 +45,8 @@ import { AuthorService } from '../../service/author.service';
 import { PublisherService } from '../../service/publisher.service';
 import { BookService } from '../../service/book.service';
 import { ShareService } from '../../service/shareservice';
+import { StatusbookService } from '../../service/statusbook.service';
+import { SharedataService } from '../../service/sharedata.service';
 
 
 
@@ -102,7 +104,9 @@ import { ShareService } from '../../service/shareservice';
     AuthorService,
     PublisherService,
     BookService,
-    ShareService
+    StatusbookService,
+    ShareService,
+    SharedataService
    
  
 
